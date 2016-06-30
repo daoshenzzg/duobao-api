@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class TemplateUtil {
 	private static String templateDir;
 	private static List<File> fileList = new ArrayList<File>();
 	private static Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
-	private final static Map<String, Template> TEMPLATES = new HashMap<String, Template>();
+	private final static Map<String, Template> TEMPLATES = new ConcurrentHashMap<String, Template>();
 
 	private TemplateUtil() {
 	}

@@ -30,6 +30,7 @@ public class ValidationFilter implements ActionFilter {
 	private final static Set<String> ALLOW_URI = new HashSet<String>() {
 		private static final long serialVersionUID = 1L;
 		{
+			add("/api/reload_template");
 			add("/api/invalid_sign");
 			add("/api/invalid_token");
 			add("/api/invalid_exception");

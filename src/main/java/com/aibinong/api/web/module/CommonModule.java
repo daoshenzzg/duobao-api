@@ -7,11 +7,24 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 
+import com.aibinong.api.util.TemplateUtil;
 import com.aibinong.api.web.ResultCode;
 
 @At("/api")
 @IocBean
 public class CommonModule {
+
+	@At("/reload_template")
+	@Ok("json")
+	public Object reloadTemplate() {
+		TemplateUtil.initTemplate();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", ResultCode.SUCCESS);
+		map.put("info", "");
+		map.put("data", "");
+		return map;
+	}
 
 	@At("/exception")
 	@Ok("json")
