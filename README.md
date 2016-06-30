@@ -1,5 +1,10 @@
 基础API架构
 
+编译：mvn eclipse:eclipse -Dwtpversion=1.0
+
+
+功能：
+
 1.校验拦截器:/duobao-api/src/main/java/com/aibinong/api/web/filter/ValidationFilter.java
 
 2.注解事务处理:/duobao-api/src/main/java/com/aibinong/api/service/user/impl/UserServiceImpl.java
