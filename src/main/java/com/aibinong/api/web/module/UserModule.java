@@ -26,7 +26,7 @@ public class UserModule {
 	private UserService userService;
 	
 	@GET
-	@At("/get_users")
+	@At("/user/get_users")
 	@Ok("raw")
 	public Object getUsers() {
 		List<UserDO> users = userService.getUsers();
@@ -38,7 +38,7 @@ public class UserModule {
 	}
 	
 	@GET
-	@At("/get_user")
+	@At("/user/get_user")
 	@Ok("raw")
 	public Object getUser(@Param("id") Long id, @Param("client_id") String clientId) {
 		UserDO user = userService.getUser(id, clientId);
@@ -50,7 +50,7 @@ public class UserModule {
 	}
 
 	@POST
-	@At("/add_users")
+	@At("/user/add_users")
 	@Ok("raw")
 	public Object addUsers(@Param("id") String id) {
 		

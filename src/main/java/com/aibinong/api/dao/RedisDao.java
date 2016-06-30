@@ -32,7 +32,7 @@ public class RedisDao {
 	private final static int DEFAULT_TIMEOUT = 3000;
 	private final static boolean DEFAULT_TEST_ON_BORROW = false;
 	private final static boolean DEFAULT_TEST_ON_RETURN = false;
-	protected volatile boolean inited = false;
+	private volatile boolean inited = false;
 	private String host;
 	private int port;
 	private String password;

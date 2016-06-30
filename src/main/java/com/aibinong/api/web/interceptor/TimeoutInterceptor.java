@@ -26,7 +26,6 @@ public class TimeoutInterceptor implements MethodInterceptor {
 		long end = System.currentTimeMillis();
 		long time = end - start;
 
-
 		if (time > Constants.API_TIMEOUT) {
 			// TODO
 			if (LOG.isDebugEnabled()) {
@@ -34,7 +33,5 @@ public class TimeoutInterceptor implements MethodInterceptor {
 				LOG.debug("'{}' response time > '{}' ms.", new Object[] { request.getRequestURI(), time });
 			}
 		}
-
 	}
-
 }

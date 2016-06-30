@@ -20,4 +20,4 @@
 
 
 请求测试:
-http://localhost:8080/duobao-api/api/get_users?sign=94ca8e228c55edd4780839bd29f2cf61&access_token=abcde
+http://localhost:8080/duobao-api/api/user/get_users?sign=94ca8e228c55edd4780839bd29f2cf61&access_token=abcde

@@ -38,61 +38,61 @@ public class ValidationFilter implements ActionFilter {
 
 	@Override
 	public View match(ActionContext actionContext) {
-		//		if("release".equals(Constants.ENVIRONMENT)) {
-		HttpServletRequest request = actionContext.getRequest();
-		String uri = request.getRequestURI();
-		for (String allowUri : ALLOW_URI) {
-			if (uri.indexOf(allowUri) > 0) {
-				return null;
+		if ("release".equals(Constants.ENVIRONMENT)) {
+			HttpServletRequest request = actionContext.getRequest();
+			String uri = request.getRequestURI();
+			for (String allowUri : ALLOW_URI) {
+				if (uri.indexOf(allowUri) > 0) {
+					return null;
+				}
 			}
-		}
 
-		String sign = request.getParameter(Constants.SIGN_KEY);
-		if (StringUtils.isBlank(sign)) {
+			String sign = request.getParameter(Constants.SIGN_KEY);
+			if (StringUtils.isBlank(sign)) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("invalid sign");
+				}
+				return new ForwardView("/api/invalid_sign");
+			}
+			String token = request.getParameter(Constants.TOKEN_KEY);
+			if (StringUtils.isBlank(token)) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("invalid token");
+				}
+				return new ForwardView("/api/invalid_token");
+			}
+
+			@SuppressWarnings("unchecked")
+			Map<String, String[]> paramMap = request.getParameterMap();
+			String[] keyVals = new String[paramMap.size() - 1];
+			int i = 0;
+			for (String key : paramMap.keySet()) {
+				if (Constants.SIGN_KEY.equals(key)) {
+					continue;
+				}
+				String val = paramMap.get(key)[0];
+				keyVals[i++] = key + val;
+			}
+			// 参数按字典排序
+			Arrays.sort(keyVals);
+
+			// 连接参数名与参数值,并在末尾尾加上secret
+			StringBuilder sb = new StringBuilder();
+			for (String keyVal : keyVals) {
+				sb.append(keyVal);
+			}
+			sb.append(Constants.SECRET);
+
+			// sign校验
+			String md5 = Lang.md5(sb.toString());
+
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("invalid sign");
+				LOG.debug("md5='{}', sign='{}'", new Object[] { md5, sign });
 			}
-			return new ForwardView("/api/invalid_sign");
-		}
-		String token = request.getParameter(Constants.TOKEN_KEY);
-		if (StringUtils.isBlank(token)) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("invalid token");
+			if (!md5.equalsIgnoreCase(sign)) {
+				return new ForwardView("/api/invalid_sign");
 			}
-			return new ForwardView("/api/invalid_token");
 		}
-
-		@SuppressWarnings("unchecked")
-		Map<String, String[]> paramMap = request.getParameterMap();
-		String[] keyVals = new String[paramMap.size() - 1];
-		int i = 0;
-		for (String key : paramMap.keySet()) {
-			if (Constants.SIGN_KEY.equals(key)) {
-				continue;
-			}
-			String val = paramMap.get(key)[0];
-			keyVals[i++] = key + val;
-		}
-		// 参数按字典排序
-		Arrays.sort(keyVals);
-
-		// 连接参数名与参数值,并在末尾尾加上secret
-		StringBuilder sb = new StringBuilder();
-		for (String keyVal : keyVals) {
-			sb.append(keyVal);
-		}
-		sb.append(Constants.SECRET);
-
-		// sign校验
-		String md5 = Lang.md5(sb.toString());
-
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("md5='{}', sign='{}'", new Object[] { md5, sign });
-		}
-		if (!md5.equalsIgnoreCase(sign)) {
-			return new ForwardView("/api/invalid_sign");
-		}
-		//		}
 		return null;
 	}
 
