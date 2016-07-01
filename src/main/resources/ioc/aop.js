@@ -1,3 +1,6 @@
+/**
+ * module方法级别的AOP拦截
+ */
 var ioc = {
     methodAop: {
         type:'com.aibinong.api.web.interceptor.TimeoutInterceptor'
@@ -14,7 +17,7 @@ var ioc = {
 	                    ]
 	                }
 	            },
-	            { type : 'org.nutz.ioc.aop.config.impl.AnnotationAopConfigration' }
+	            { type: 'org.nutz.ioc.aop.config.impl.AnnotationAopConfigration' }
             ]
 	    }
 	}
