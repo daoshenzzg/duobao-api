@@ -33,15 +33,17 @@ public class UserServiceImpl implements UserService {
 	public UserDO getUser(Long id, String clientId) {
 		String key = String.format("user:get_user:id:%d:client_id:%s", id, clientId);
 		String value = redisDao.get(key);
-		if(StringUtils.isNotBlank(value)) {
+		if (StringUtils.isNotBlank(value)) {
 			UserDO userDO = JSON.parseObject(value, UserDO.class);
 			LOG.debug("_____get value from redis : '{}'", value);
 			return userDO;
-		}else {
+		} else {
 			UserDO userDO = basicDao.find(id, UserDO.class);
-			value = JSON.toJSONString(userDO);
-			redisDao.setex(key, value, 30);
-			LOG.debug("_____set value to redis : '{}'" , value);
+			if (userDO != null) {
+				value = JSON.toJSONString(userDO);
+				redisDao.setex(key, value, 30);
+				LOG.debug("_____set value to redis : '{}'", value);
+			}
 			return userDO;
 		}
 	}
