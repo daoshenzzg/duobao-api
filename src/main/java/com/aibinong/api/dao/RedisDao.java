@@ -62,14 +62,17 @@ public class RedisDao {
 
 			JedisPoolConfig config = new JedisPoolConfig();
 			//最大空闲连接数, 应用自己评估，不要超过ApsaraDB for Redis每个实例最大的连接数
-			config.setMaxIdle(this.maxIdel);
+			config.setMaxIdle(maxIdel);
 			//最大连接数, 应用自己评估，不要超过ApsaraDB for Redis每个实例最大的连接数
-			config.setMaxTotal(this.maxTotal);
-			config.setTestOnBorrow(this.testOnBorrow);
-			config.setTestOnReturn(this.testOnReturn);
-			pool = new JedisPool(config, this.host, this.port, this.timeout);
+			config.setMaxTotal(maxTotal);
+			config.setTestOnBorrow(testOnBorrow);
+			config.setTestOnReturn(testOnReturn);
+			pool = new JedisPool(config, host, port, timeout);
 
 			init = true;
+		} catch (Exception e) {
+			LOG.error("redis poll init error", e);
+			throw e;
 		} finally {
 			inited = true;
 			lock.unlock();
@@ -81,8 +84,13 @@ public class RedisDao {
 	}
 
 	public void colse() {
-		if (pool != null) {
-			pool.destroy();
+		lock.lock();
+		try {
+			if (pool != null) {
+				pool.destroy();
+			}
+		} finally {
+			lock.unlock();
 		}
 	}
 

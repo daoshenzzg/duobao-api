@@ -11,8 +11,8 @@ var ioc = {
     dataSource: {
         type: "com.alibaba.druid.pool.DruidDataSource",
         events: {
-            create : "init",
-            depose : "close"
+            create: "init",
+            depose: "close"
         },
         fields: {
             url: {java:"$conf.get('db.url')"},
@@ -35,7 +35,7 @@ var ioc = {
     redisDao: {
     	type: "com.aibinong.api.dao.RedisDao",
     	events: {
-            create : "init"
+            create: "init"
         },
 	    fields: {
 	        host: {java:"$conf.get('redis.host')"},
