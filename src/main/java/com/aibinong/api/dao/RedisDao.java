@@ -113,6 +113,25 @@ public class RedisDao {
 			jedis.close();
 		}
 	}
+	
+	public String get(String key) {
+		Jedis jedis = getJedis();
+		try {
+			return jedis.get(key);
+		} finally {
+			closeJedis(jedis);
+		}
+	}
+	
+	public void setex(String key, String value, int seconds) {
+		Jedis jedis = getJedis();
+		try {
+			jedis.set(key, value);
+			jedis.expire(key, seconds);
+		} finally {
+			closeJedis(jedis);
+		}
+	}
 
 	public void expire(String key, int seconds) {
 		if (seconds <= 0) {
