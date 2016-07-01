@@ -124,6 +124,10 @@ public class RedisDao {
 	}
 	
 	public void setex(String key, String value, int seconds) {
+		if(value == null) {
+			return;
+		}
+		
 		Jedis jedis = getJedis();
 		try {
 			jedis.set(key, value);
