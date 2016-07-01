@@ -4,11 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.aop.InterceptorChain;
 import org.nutz.aop.MethodInterceptor;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.aibinong.api.web.Constants;
 
 /**
  * 接口超时拦截器
@@ -16,6 +15,7 @@ import com.aibinong.api.web.Constants;
  * @version 1.0    
  * @created 2016年6月30日 下午4:27:10
  */
+@IocBean
 public class TimeoutInterceptor implements MethodInterceptor {
 	private final static Logger LOG = LoggerFactory.getLogger(TimeoutInterceptor.class);
 
@@ -26,12 +26,12 @@ public class TimeoutInterceptor implements MethodInterceptor {
 		long end = System.currentTimeMillis();
 		long time = end - start;
 
-		if (time > Constants.API_TIMEOUT) {
+//		if (time > Constants.API_TIMEOUT) {
 			// TODO
 			if (LOG.isDebugEnabled()) {
 				HttpServletRequest request = Mvcs.getReq();
-				LOG.debug("'{}' response time > '{}' ms.", new Object[] { request.getRequestURI(), time });
+				LOG.debug("'{}' response time {} ms.", new Object[] { request.getRequestURI(), time });
 			}
-		}
+//		}
 	}
 }

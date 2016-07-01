@@ -3,6 +3,8 @@ package com.aibinong.api.web.module;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
@@ -28,7 +30,7 @@ public class CommonModule {
 
 	@At("/exception")
 	@Ok("json")
-	public Object exception() {
+	public Object exception(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.EXCEPTION);
 		map.put("info", ResultCode.ERROR.get(ResultCode.EXCEPTION));
