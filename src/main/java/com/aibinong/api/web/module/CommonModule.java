@@ -20,7 +20,8 @@ public class CommonModule {
 	@Ok("json")
 	public Object reloadTemplate() {
 		TemplateUtil.initTemplate();
-
+		
+		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.SUCCESS);
 		map.put("info", "");
@@ -31,9 +32,15 @@ public class CommonModule {
 	@At("/exception")
 	@Ok("json")
 	public Object exception(HttpServletRequest request) {
+		Object err = request.getAttribute("obj");
+		String message = "";
+		if(err instanceof RuntimeException) {
+			message = ((RuntimeException) err).getMessage();
+		}
+		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.EXCEPTION);
-		map.put("info", ResultCode.ERROR.get(ResultCode.EXCEPTION));
+		map.put("info", ResultCode.ERROR.get(ResultCode.EXCEPTION) + message);
 		map.put("data", "");
 		return map;
 	}
@@ -41,6 +48,7 @@ public class CommonModule {
 	@At("/invalid_sign")
 	@Ok("json")
 	public Object invalidSign() {
+		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.ERROR_1000);
 		map.put("info", ResultCode.ERROR.get(ResultCode.ERROR_1000));
@@ -51,6 +59,7 @@ public class CommonModule {
 	@At("/invalid_token")
 	@Ok("json")
 	public Object invalidToken() {
+		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.ERROR_1001);
 		map.put("info", ResultCode.ERROR.get(ResultCode.ERROR_1001));
