@@ -9,6 +9,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 
+import com.aibinong.api.annotation.Allow;
 import com.aibinong.api.util.TemplateUtil;
 import com.aibinong.api.web.ResultCode;
 
@@ -16,6 +17,7 @@ import com.aibinong.api.web.ResultCode;
 @IocBean
 public class CommonModule {
 
+	@Allow
 	@At("/reload_template")
 	@Ok("json")
 	public Object reloadTemplate() {
@@ -29,6 +31,7 @@ public class CommonModule {
 		return map;
 	}
 
+	@Allow
 	@At("/exception")
 	@Ok("json")
 	public Object exception(HttpServletRequest request) {
@@ -46,6 +49,7 @@ public class CommonModule {
 		return map;
 	}
 
+	@Allow
 	@At("/invalid_sign")
 	@Ok("json")
 	public Object invalidSign() {
@@ -57,6 +61,7 @@ public class CommonModule {
 		return map;
 	}
 
+	@Allow
 	@At("/invalid_token")
 	@Ok("json")
 	public Object invalidToken() {

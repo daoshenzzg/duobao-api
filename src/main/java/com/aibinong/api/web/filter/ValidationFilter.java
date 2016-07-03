@@ -1,9 +1,8 @@
 package com.aibinong.api.web.filter;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +15,7 @@ import org.nutz.mvc.view.ForwardView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aibinong.api.annotation.Allow;
 import com.aibinong.api.web.Constants;
 
 /**
@@ -27,27 +27,16 @@ import com.aibinong.api.web.Constants;
 public class ValidationFilter implements ActionFilter {
 	private final static Logger LOG = LoggerFactory.getLogger(ValidationFilter.class);
 
-	private final static Set<String> ALLOW_URI = new HashSet<String>() {
-		private static final long serialVersionUID = 1L;
-		{
-			add("/api/reload_template");
-			add("/api/invalid_sign");
-			add("/api/invalid_token");
-			add("/api/invalid_exception");
-		}
-	};
-
 	@Override
 	public View match(ActionContext actionContext) {
 		if ("release".equals(Constants.ENVIRONMENT)) {
-			HttpServletRequest request = actionContext.getRequest();
-			String uri = request.getRequestURI();
-			for (String allowUri : ALLOW_URI) {
-				if (uri.indexOf(allowUri) > 0) {
-					return null;
-				}
+			Method actionMethod = actionContext.getMethod();
+			Allow allow = actionMethod.getAnnotation(Allow.class);
+			if(allow != null && allow.value()) {
+				return null;
 			}
-
+			
+			HttpServletRequest request = actionContext.getRequest();
 			String sign = request.getParameter(Constants.SIGN_KEY);
 			if (StringUtils.isBlank(sign)) {
 				if (LOG.isDebugEnabled()) {
