@@ -14,6 +14,7 @@ import com.aibinong.api.dao.BasicDao;
 import com.aibinong.api.dao.RedisDao;
 import com.aibinong.api.pojo.UserDO;
 import com.aibinong.api.service.user.UserService;
+import com.aibinong.api.util.TimeUnit;
 import com.alibaba.fastjson.JSON;
 
 @IocBean(name = "userService")
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 			UserDO userDO = basicDao.find(id, UserDO.class);
 			if (userDO != null) {
 				value = JSON.toJSONString(userDO);
-				redisDao.setex(key, value, 30);
+				redisDao.setex(key, value, TimeUnit.HOUR);
 				LOG.debug("_____set value to redis : '{}'", value);
 			}
 			return userDO;
