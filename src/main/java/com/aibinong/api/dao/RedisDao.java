@@ -13,7 +13,7 @@ import com.aibinong.api.util.NutzUtil;
 import com.aibinong.api.web.MainModule;
 
 /**
- * RedisDao based on Jedis-2.7.2
+ * RedisDao based on Jedis-2.7.3
  * @author zhang_zg 
  * @version 1.0    
  * @created 2016年6月30日 下午3:09:40
