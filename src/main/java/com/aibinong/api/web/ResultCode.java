@@ -11,7 +11,11 @@ public class ResultCode {
 
 	public final static String EXCEPTION = "9999";
 
-	public final static Map<String, String> ERROR = new HashMap<String, String>();
+	private final static Map<String, String> ERROR = new HashMap<String, String>();
+	
+	public static String getErrorMessage(String key) {
+		return ERROR.get(key);
+	}
 
 	static {
 		ERROR.put(ERROR_1000, "无效签名");

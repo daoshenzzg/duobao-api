@@ -44,7 +44,7 @@ public class CommonModule {
 		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.EXCEPTION);
-		map.put("info", ResultCode.ERROR.get(ResultCode.EXCEPTION) + message);
+		map.put("info", ResultCode.getErrorMessage(ResultCode.EXCEPTION) + message);
 		map.put("data", "");
 		return map;
 	}
@@ -56,7 +56,7 @@ public class CommonModule {
 		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.ERROR_1000);
-		map.put("info", ResultCode.ERROR.get(ResultCode.ERROR_1000));
+		map.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1000));
 		map.put("data", "");
 		return map;
 	}
@@ -68,7 +68,7 @@ public class CommonModule {
 		// 重定向的内容可以放到模板里
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", ResultCode.ERROR_1001);
-		map.put("info", ResultCode.ERROR.get(ResultCode.ERROR_1001));
+		map.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1001));
 		map.put("data", "");
 		return map;
 	}
