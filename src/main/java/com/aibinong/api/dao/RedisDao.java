@@ -1,7 +1,5 @@
 package com.aibinong.api.dao;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
 import org.slf4j.Logger;
@@ -25,14 +23,13 @@ public class RedisDao {
 	private final static Logger LOG = LoggerFactory.getLogger(RedisDao.class);
 
 	private JedisPool pool;
-	private ReentrantLock lock = new ReentrantLock();;
 
 	private final static int DEFAULT_MAX_IDLE = 8;
 	private final static int DEFAULT_MAX_TOTAL = 8;
 	private final static int DEFAULT_TIMEOUT = 3000;
 	private final static boolean DEFAULT_TEST_ON_BORROW = false;
 	private final static boolean DEFAULT_TEST_ON_RETURN = false;
-	private volatile boolean inited = false;
+	
 	private String host;
 	private int port;
 	private String password;
@@ -43,23 +40,7 @@ public class RedisDao {
 	private boolean testOnReturn = DEFAULT_TEST_ON_RETURN;
 
 	public void init() {
-		if (inited) {
-			return;
-		}
-
-		final ReentrantLock lock = this.lock;
 		try {
-			lock.lockInterruptibly();
-		} catch (InterruptedException e) {
-			throw new RuntimeException("interrupt", e);
-		}
-
-		boolean init = false;
-		try {
-			if (inited) {
-				return;
-			}
-
 			JedisPoolConfig config = new JedisPoolConfig();
 			//最大空闲连接数, 应用自己评估，不要超过ApsaraDB for Redis每个实例最大的连接数
 			config.setMaxIdle(maxIdel);
@@ -68,29 +49,11 @@ public class RedisDao {
 			config.setTestOnBorrow(testOnBorrow);
 			config.setTestOnReturn(testOnReturn);
 			pool = new JedisPool(config, host, port, timeout);
-
-			init = true;
+			
+			LOG.info("[{}:{}] redis pool init success!", new Object[] { this.host, this.port });
 		} catch (Exception e) {
 			LOG.error("redis poll init error", e);
 			throw e;
-		} finally {
-			inited = true;
-			lock.unlock();
-
-			if (init && LOG.isInfoEnabled()) {
-				LOG.info("[{}:{}] redis pool init success!", new Object[] { this.host, this.port });
-			}
-		}
-	}
-
-	public void colse() {
-		lock.lock();
-		try {
-			if (pool != null) {
-				pool.destroy();
-			}
-		} finally {
-			lock.unlock();
 		}
 	}
 
@@ -113,7 +76,7 @@ public class RedisDao {
 			jedis.close();
 		}
 	}
-	
+
 	public String get(String key) {
 		Jedis jedis = getJedis();
 		try {
@@ -122,12 +85,12 @@ public class RedisDao {
 			closeJedis(jedis);
 		}
 	}
-	
+
 	public void setex(String key, String value, int seconds) {
-		if(value == null) {
+		if (value == null) {
 			return;
 		}
-		
+
 		Jedis jedis = getJedis();
 		try {
 			jedis.set(key, value);
