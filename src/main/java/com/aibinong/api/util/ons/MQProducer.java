@@ -5,18 +5,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.Mvcs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aibinong.api.util.NutzUtil;
-import com.aibinong.api.web.Constants;
-import com.aibinong.api.web.MainModule;
-import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
-import com.aliyun.openservices.ons.api.SendResult;
 
 /**
  * 阿里云ONS MQ 生产者工具类
@@ -94,23 +88,5 @@ public class MQProducer {
 
 	public void setProducerIds(String[] producerIds) {
 		this.producerIds = producerIds;
-	}
-
-	public static void main(String[] args) {
-		NutzUtil.init(MainModule.class);
-		MQProducer mqQroducer = Mvcs.getIoc().get(MQProducer.class, "mqProducer");
-		Producer producer = mqQroducer.getProducer(Constants.PAY_PRODUCER_ID);
-
-		Message message = new Message(Constants.PAY_TOPIC, "", "{'title': 'hello aibinong!'}".getBytes());
-		message.setKey(String.valueOf(1));
-
-		//发送消息，只要不抛异常就是成功
-		try {
-			SendResult sendResult = producer.send(message);
-			System.out.println("支付消息发送成功! messageId=" + sendResult.getMessageId());
-		} catch (Exception ex) {
-			throw ex;
-		}
-		mqQroducer.close();
 	}
 }

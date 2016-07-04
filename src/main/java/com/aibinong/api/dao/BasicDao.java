@@ -14,6 +14,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.ConnCallback;
 import org.nutz.dao.Dao;
+import org.nutz.dao.QueryResult;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Entity;
 import org.nutz.dao.entity.Record;
@@ -708,4 +709,70 @@ public class BasicDao {
 		}
 	}
 
+	/**
+	 * 无POJO分页查询
+	 * @author zhang_zg
+	 * @param sqlStr 自定义的SQL
+	 * @param currentPage 页码
+	 * @param pageSize 分页大小
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Record> querySqlByPage(String sqlStr, int currentPage, int pageSize) {
+		Sql sql = Sqls.create(sqlStr);
+		sql.setPager(dao.createPager(currentPage, pageSize));
+		dao.execute(sql.setCallback(new SqlCallback() {
+			@Override
+			public List<Record> invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<Record> result = new ArrayList<Record>();
+				while (rs.next()) {
+					result.add(Record.create(rs));
+				}
+				return result;
+			}
+		}));
+		return (List<Record>) sql.getResult();
+	}
+
+	/**
+	 * SQL查询记录总数
+	 * @author zhang_zg
+	 * @param sqlStr
+	 * @return
+	 */
+	public int querySqlCount(String sqlStr) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT COUNT(1) FROM ( ");
+		sb.append(sqlStr);
+		sb.append(") t ");
+		Sql sql = Sqls.fetchLong(sb.toString());
+		dao.execute(sql);
+		return sql.getInt();
+	}
+
+	/**
+	 * 分页包装的自定义查询
+	 * @author zhang_zg
+	 * @param sqlStr
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	public QueryResult querySqlResult(String sqlStr, int currentPage, int pageSize) {
+		Sql sql = Sqls.create(sqlStr);
+		Pager pager = dao.createPager(currentPage, pageSize);
+		sql.setPager(pager);
+		dao.execute(sql.setCallback(new SqlCallback() {
+			@Override
+			public List<Record> invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<Record> result = new ArrayList<Record>();
+				while (rs.next()) {
+					result.add(Record.create(rs));
+				}
+				return result;
+			}
+		}));
+		pager.setRecordCount(this.querySqlCount(sqlStr));
+		return new QueryResult((List<?>) sql.getResult(), pager);
+	}
 }
