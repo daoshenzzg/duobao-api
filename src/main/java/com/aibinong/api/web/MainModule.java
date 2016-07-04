@@ -19,7 +19,7 @@ import com.aibinong.api.web.filter.ValidationFilter;
 		"com.aibinong.api", 
 		"*org.nutz.aop.interceptor.ioc.TransIocLoader" 
 	},
-	init = { "dao", "redisDao", "mqProducter" }
+	init = { "dao", "redisDao", "mqProducer" }
 )
 @SetupBy(value = MainSetup.class)
 @Encoding(input = "UTF-8", output = "UTF-8")

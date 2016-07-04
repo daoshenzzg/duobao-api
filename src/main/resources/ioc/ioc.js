@@ -47,15 +47,15 @@ var ioc = {
 	    }
     },
     
-    mqProducter: {
-    	type: "com.aibinong.api.util.ons.MQProducter",
+    mqProducer: {
+    	type: "com.aibinong.api.util.ons.MQProducer",
     	events: {
             create: "init"
         },
 	    fields: {
 	    	accessKey: {java:"$conf.get('aliyun.access.key')"},
 	    	secretKey: {java:"$conf.get('aliyun.secret.key')"},
-	    	producterIds: [
+	    	producerIds: [
 	    	    {java:"$conf.get('pay.producer.id')"}, 
 	    	    {java:"$conf.get('duobao.producer.id')"}
 	    	]
