@@ -4,13 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.Mvcs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aibinong.api.util.NutzUtil;
+import com.aibinong.api.web.MainModule;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 
+@IocBean
 public class MQProducter {
 	private final static Logger LOG = LoggerFactory.getLogger(MQProducter.class);
 
@@ -71,5 +76,16 @@ public class MQProducter {
 
 	public void setProducterIds(String[] producterIds) {
 		this.producterIds = producterIds;
+	}
+	
+	public static void main(String[] args) {
+		NutzUtil.init(MainModule.class);
+		MQProducter mqProducter = Mvcs.getIoc().get(MQProducter.class, "mqProducter");
+
+		Producer producer = mqProducter.getProducter("PID_com_aibinong_topic_duobao-d");
+
+//		Message message = new Message("com_aibinong_topic_duobao-d", "", "{title:'hello world!'}".getBytes());
+//		SendResult result = producer.send(message);
+//		System.out.println(result.getMessageId());
 	}
 }

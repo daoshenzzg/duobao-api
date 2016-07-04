@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
@@ -17,6 +18,8 @@ import org.nutz.mvc.annotation.Param;
 import com.aibinong.api.pojo.UserDO;
 import com.aibinong.api.service.user.UserService;
 import com.aibinong.api.util.TemplateUtil;
+import com.aibinong.api.util.ons.MQProducter;
+import com.aliyun.openservices.ons.api.Producer;
 
 @At("/api")
 @IocBean
@@ -45,6 +48,10 @@ public class UserModule {
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("user", user);
+		
+		MQProducter mqProducter = Mvcs.getIoc().get(MQProducter.class, "mqProducter");
+
+		Producer producer = mqProducter.getProducter("PID_com_aibinong_topic_duobao-d");
 
 		return TemplateUtil.format("/user/get_user.ftl", data);
 	}

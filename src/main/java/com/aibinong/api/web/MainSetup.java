@@ -12,8 +12,7 @@ public class MainSetup implements Setup {
 
 	@Override
 	public void init(NutConfig conf) {
-		LOG.debug("MainSetup init().");
-		
+		LOG.debug("MainSetup init start...");
 		// 初始化模板到内存
 		TemplateUtil.initTemplate();
 	}
