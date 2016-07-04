@@ -111,5 +111,6 @@ public class MQProducer {
 		} catch (Exception ex) {
 			throw ex;
 		}
+		mqQroducer.close();
 	}
 }

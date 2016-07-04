@@ -1,7 +1,20 @@
 package com.aibinong.api.dao;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.nutz.castor.Castors;
-import org.nutz.dao.*;
+import org.nutz.dao.Chain;
+import org.nutz.dao.Cnd;
+import org.nutz.dao.Condition;
+import org.nutz.dao.ConnCallback;
+import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Entity;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.impl.NutDao;
@@ -12,13 +25,6 @@ import org.nutz.dao.util.cri.SqlExpression;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 基本数据库操作类

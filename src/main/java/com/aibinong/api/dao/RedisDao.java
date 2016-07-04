@@ -1,5 +1,6 @@
 package com.aibinong.api.dao;
 
+import org.apache.commons.lang3.StringUtils;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,11 @@ public class RedisDao {
 			config.setMaxTotal(maxTotal);
 			config.setTestOnBorrow(testOnBorrow);
 			config.setTestOnReturn(testOnReturn);
-			pool = new JedisPool(config, host, port, timeout);
+			if (StringUtils.isNotBlank(password)) {
+				pool = new JedisPool(config, host, port, timeout, password);
+			} else {
+				pool = new JedisPool(config, host, port, timeout);
+			}
 			LOG.info("[{}:{}] redis pool init success!", new Object[] { this.host, this.port });
 		} catch (Exception e) {
 			LOG.error("redis poll init error", e);
