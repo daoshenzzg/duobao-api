@@ -18,6 +18,7 @@ public class Constants {
 	public final static String ENVIRONMENT = CONFIG.get("static.environment");
 	public final static long API_TIMEOUT = CONFIG.getLong("static.apiTimeout");
 
-	public final static long PAY_TOPIC = CONFIG.getLong("pay.topic");
-	public final static long PAY_PRODUCER_ID = CONFIG.getLong("pay.producer.id");
+	// 阿里云ONS 支付 MQ
+	public final static String PAY_TOPIC = CONFIG.get("pay.topic");
+	public final static String PAY_PRODUCER_ID = CONFIG.get("pay.producer.id");
 }

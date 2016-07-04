@@ -35,7 +35,8 @@ var ioc = {
     redisDao: {
     	type: "com.aibinong.api.dao.RedisDao",
     	events: {
-            create: "init"
+            create: "init",
+            depose: "close"
         },
 	    fields: {
 	        host: {java:"$conf.get('redis.host')"},
@@ -50,14 +51,14 @@ var ioc = {
     mqProducer: {
     	type: "com.aibinong.api.util.ons.MQProducer",
     	events: {
-            create: "init"
+            create: "init",
+            depose: "close"
         },
 	    fields: {
 	    	accessKey: {java:"$conf.get('aliyun.access.key')"},
 	    	secretKey: {java:"$conf.get('aliyun.secret.key')"},
 	    	producerIds: [
-	    	    {java:"$conf.get('pay.producer.id')"}, 
-	    	    {java:"$conf.get('duobao.producer.id')"}
+	    	    {java:"$conf.get('pay.producer.id')"}
 	    	]
 	    }
     }

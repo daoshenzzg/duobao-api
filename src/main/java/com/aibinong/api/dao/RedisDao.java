@@ -1,16 +1,12 @@
 package com.aibinong.api.dao;
 
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.Mvcs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-
-import com.aibinong.api.util.NutzUtil;
-import com.aibinong.api.web.MainModule;
 
 /**
  * RedisDao based on Jedis-2.7.3
@@ -49,11 +45,16 @@ public class RedisDao {
 			config.setTestOnBorrow(testOnBorrow);
 			config.setTestOnReturn(testOnReturn);
 			pool = new JedisPool(config, host, port, timeout);
-			
 			LOG.info("[{}:{}] redis pool init success!", new Object[] { this.host, this.port });
 		} catch (Exception e) {
 			LOG.error("redis poll init error", e);
 			throw e;
+		}
+	}
+	
+	public void close() {
+		if(pool != null) {
+			pool.destroy();
 		}
 	}
 
@@ -174,19 +175,5 @@ public class RedisDao {
 
 	public void setTestOnReturn(boolean testOnReturn) {
 		this.testOnReturn = testOnReturn;
-	}
-
-	public static void main(String[] args) {
-		NutzUtil.init(MainModule.class);
-		RedisDao redisDao = Mvcs.getIoc().get(RedisDao.class, "redisDao");
-
-		Jedis jedis = redisDao.getJedis();
-
-		try {
-			jedis.set("aaa", "aaa");
-			System.out.println("value:" + jedis.get("aaa"));
-		} finally {
-			redisDao.closeJedis(jedis);
-		}
 	}
 }
