@@ -1,6 +1,9 @@
 package com.aibinong.api.test;
 
+import java.util.List;
+
 import org.nutz.dao.QueryResult;
+import org.nutz.dao.entity.Record;
 import org.nutz.mvc.Mvcs;
 
 import com.aibinong.api.dao.BasicDao;
@@ -23,7 +26,12 @@ public class DaoTest {
 		sb.append("FROM users\n");
 		sb.append("WHERE 1 = 1\n");
 		QueryResult queryResult = basicDao.querySqlResult(sb.toString(), 1, 1);
-		System.out.println(queryResult.getList());
+		
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) queryResult.getList();
+		for (Record record : list) {
+			System.out.println(record);
+		}
 		System.out.println(queryResult.getPager().getPageCount());
 	}
 }
