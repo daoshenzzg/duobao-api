@@ -1,6 +1,12 @@
 package com.aibinong.api.service.product.impl;
 
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.nutz.dao.QueryResult;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -36,8 +42,39 @@ public class ProductServiceImpl implements ProductService {
 		}
 		sb.append("ORDER BY t2.weight DESC\n");
 
-		QueryResult result = basicDao.querySqlResult(sb.toString(), toPage, Constants.DEFAULT_PAGE_SIZE);
-		return result;
+		QueryResult queryResult = new QueryResult();
+		Pager pager = basicDao.createPager(toPage, Constants.DEFAULT_PAGE_SIZE);
+		queryResult.setPager(pager);
+
+		List<Record> list = basicDao.querySqlByPage(sb.toString(), toPage, Constants.DEFAULT_PAGE_SIZE);
+		if (list != null && list.size() > 0) {
+			// 分页结果处理
+			for (Record e : list) {
+				String listImg = e.getString("list_img");
+				if (StringUtils.isNotBlank(listImg)) {
+					e.put("list_img_arr", listImg.split(","));
+				}
+				String loopImg = e.getString("loop_img");
+				if (StringUtils.isNotBlank(listImg)) {
+					e.put("loop_img_arr", loopImg.split(","));
+				}
+				Date startTime = e.getTimestamp("start_time");
+				if (startTime != null) {
+					e.put("start_time_long", startTime.getTime());
+				}
+				Date awardTime = e.getTimestamp("award_time");
+				if (awardTime != null) {
+					e.put("award_time_long", awardTime.getTime());
+				}
+			}
+
+			// 总记录数处理
+			int count = basicDao.querySqlCount(sb.toString());
+			pager.setRecordCount(count);
+
+			queryResult.setList(list);
+		}
+		return queryResult;
 	}
 
 }

@@ -12,24 +12,33 @@
             <#if result.list ??>
             	<#list result.list as item> 
 	            	{
-		                "totalCount":11,
-		                "curCount":152040,
+		                "totalCount":${item.total_count?c},
+		                "curCount":${item.cur_count?c},
 		                "detailUrl":"http://front.aliulian.com/v1/crowdfunding/211354_PeriodDetail.html",
-		                "limitCount":1,
-		                "startTime":1465633732000,
-		                "status":0,
-		                "awardTime":1465633733000,
+		                "limitCount":${item.limit_count?c},
+		                "startTime":${item.start_time_long?c},
+		                "status":${item.status?c},
+		                "awardTime":${item.award_time_long!0},
 		                "percent":38,
-		                "periodId":211354,
-		                "listImg":"http://image.aliulian.com/20160513L3T8S8M8.jpg",
-		                "loopImageList":[
-		                    "http://image.aliulian.com/20160513XGMHMBLW.jpg",
-		                    "http://image.aliulian.com/20160513NNJMIW1T.jpg",
-		                    "http://image.aliulian.com/20160513471F3GAP.jpg",
-		                    "http://image.aliulian.com/201605133FSYD71T.jpg"
+		                "periodId":${item.id?c},
+		                "listImg":[
+		                	<#if list_img_arr ??>
+		                		<#list list_img_arr as item>
+		                			"${item}"
+		                			<#if item_has_next>,</#if>
+		                		</#list>
+		                	</#if>
 		                ],
-		                "productId":1305,
-		                "title":"2016款 宝马 BMW 320i 时尚型轿车 随心所动 悦无止境 （商品价格仅包含裸车价）",
+		                "loopImageList":[
+		                    <#if loop_img_arr ??>
+		                		<#list loop_img_arr as item>
+		                			"${item}"
+		                			<#if item_has_next>,</#if>
+		                		</#list>
+		                	</#if>
+		                ],
+		                "productId":${item.product_id?c},
+		                "title":"${item.title!}",
 		                "newImg":"http://image.aliulian.com/grab_ten_yuan.png",
 		                "hotImg":""
 		            }

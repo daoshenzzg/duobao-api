@@ -8,10 +8,10 @@
         </layout>
     </appender>
 
-    <appender name="rollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <Encoding>UTF-8</Encoding>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${BASE_PATH}/access.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${BASE_PATH}/access.%d{yyyyMMdd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -21,6 +21,23 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="rollingAppender" />
+        <appender-ref ref="ACCESS" />
     </root>
+    
+    <!-- timeout logs -->
+	<appender name="TIMEOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BASE_PATH}/timeout.%d{yyyyMMdd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d|%msg%n</pattern>
+		</layout>
+	</appender>
+
+	<logger name="TIMEOUT" additivity="false" level="DEBUG">
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="TIMEOUT" />
+	</logger>
 </configuration>

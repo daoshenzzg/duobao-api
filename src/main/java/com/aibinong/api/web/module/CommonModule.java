@@ -19,26 +19,18 @@ public class CommonModule {
 
 	@Allow
 	@At("/exception")
-	@Ok("json")
+	@Ok("raw")
 	public Object exception(HttpServletRequest request) {
-		// 参考:http://nutzam.com/core/mvc/view.html
-		Object err = request.getAttribute("obj");
-		String message = "";
-		if(err instanceof RuntimeException) {
-			message = ((RuntimeException) err).getMessage();
-		}
-		// 重定向的内容可以放到模板里
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("code", ResultCode.EXCEPTION);
-		data.put("info", ResultCode.getErrorMessage(ResultCode.EXCEPTION) + message);
+		data.put("info", ResultCode.getErrorMessage(ResultCode.EXCEPTION));
 		return TemplateUtil.format("/common/common_error.ftl", data);
 	}
 
 	@Allow
 	@At("/invalid_sign")
-	@Ok("json")
+	@Ok("raw")
 	public Object invalidSign() {
-		// 重定向的内容可以放到模板里
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("code", ResultCode.ERROR_1000);
 		data.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1000));
@@ -47,9 +39,8 @@ public class CommonModule {
 
 	@Allow
 	@At("/invalid_token")
-	@Ok("json")
+	@Ok("raw")
 	public Object invalidToken() {
-		// 重定向的内容可以放到模板里
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("code", ResultCode.ERROR_1001);
 		data.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1001));
@@ -62,10 +53,9 @@ public class CommonModule {
 	public Object reloadTemplate() {
 		TemplateUtil.initTemplate();
 
-		// 重定向的内容可以放到模板里
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("code", ResultCode.SUCCESS);
-		data.put("info", "");
+		data.put("info", "templates reload success!");
 		data.put("data", "");
 		return data;
 	}
