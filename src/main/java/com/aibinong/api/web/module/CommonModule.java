@@ -18,20 +18,6 @@ import com.aibinong.api.web.ResultCode;
 public class CommonModule {
 
 	@Allow
-	@At("/reload_template")
-	@Ok("json")
-	public Object reloadTemplate() {
-		TemplateUtil.initTemplate();
-		
-		// 重定向的内容可以放到模板里
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", ResultCode.SUCCESS);
-		map.put("info", "");
-		map.put("data", "");
-		return map;
-	}
-
-	@Allow
 	@At("/exception")
 	@Ok("json")
 	public Object exception(HttpServletRequest request) {
@@ -42,11 +28,10 @@ public class CommonModule {
 			message = ((RuntimeException) err).getMessage();
 		}
 		// 重定向的内容可以放到模板里
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", ResultCode.EXCEPTION);
-		map.put("info", ResultCode.getErrorMessage(ResultCode.EXCEPTION) + message);
-		map.put("data", "");
-		return map;
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("code", ResultCode.EXCEPTION);
+		data.put("info", ResultCode.getErrorMessage(ResultCode.EXCEPTION) + message);
+		return TemplateUtil.format("/common/common_error.ftl", data);
 	}
 
 	@Allow
@@ -54,11 +39,10 @@ public class CommonModule {
 	@Ok("json")
 	public Object invalidSign() {
 		// 重定向的内容可以放到模板里
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", ResultCode.ERROR_1000);
-		map.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1000));
-		map.put("data", "");
-		return map;
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("code", ResultCode.ERROR_1000);
+		data.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1000));
+		return TemplateUtil.format("/common/common_error.ftl", data);
 	}
 
 	@Allow
@@ -66,10 +50,23 @@ public class CommonModule {
 	@Ok("json")
 	public Object invalidToken() {
 		// 重定向的内容可以放到模板里
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", ResultCode.ERROR_1001);
-		map.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1001));
-		map.put("data", "");
-		return map;
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("code", ResultCode.ERROR_1001);
+		data.put("info", ResultCode.getErrorMessage(ResultCode.ERROR_1001));
+		return TemplateUtil.format("/common/common_error.ftl", data);
+	}
+
+	@Allow
+	@At("/reload_template")
+	@Ok("json")
+	public Object reloadTemplate() {
+		TemplateUtil.initTemplate();
+
+		// 重定向的内容可以放到模板里
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("code", ResultCode.SUCCESS);
+		data.put("info", "");
+		data.put("data", "");
+		return data;
 	}
 }

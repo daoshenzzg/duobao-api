@@ -8,6 +8,7 @@ public class ResultCode {
 	
 	public final static String ERROR_1000 = "1000";
 	public final static String ERROR_1001 = "1001";
+	public final static String ERROR_1002 = "1002";
 
 	public final static String EXCEPTION = "9999";
 
@@ -20,6 +21,7 @@ public class ResultCode {
 	static {
 		ERROR.put(ERROR_1000, "无效签名");
 		ERROR.put(ERROR_1001, "token失效, 请重新登录");
+		ERROR.put(ERROR_1002, "非法参数");
 		ERROR.put(EXCEPTION, "系统异常");
 	}
 }

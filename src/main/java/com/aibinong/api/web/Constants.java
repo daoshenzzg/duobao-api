@@ -12,6 +12,7 @@ import org.nutz.mvc.Mvcs;
 public class Constants {
 	public final static String SIGN_KEY = "sign";
 	public final static String TOKEN_KEY = "access_token";
+	public final static int DEFAULT_PAGE_SIZE = 2;
 
 	public final static PropertiesProxy CONFIG = Mvcs.getIoc().get(PropertiesProxy.class, "conf");
 	public final static String SECRET = CONFIG.get("static.secret");
