@@ -9,13 +9,15 @@
 
 2.注解事务处理:/duobao-api/src/main/java/com/aibinong/api/service/user/impl/UserServiceImpl.java
 
-3.超时或异常拦截:/duobao-api/src/main/java/com/aibinong/api/web/interceptor/TimeoutInterceptor.java
+3.超时拦截:/duobao-api/src/main/java/com/aibinong/api/web/interceptor/TimeoutInterceptor.java
 
 4.RedisDao:/duobao-api/src/main/java/com/aibinong/api/dao/RedisDao.java
 
 5.FreeMarker:/duobao-api/src/main/java/com/aibinong/api/util/TemplateUtil.java
 
 6.防SQL注入的durid数据库连接池
+
+7.阿里云ONS MQ Producer工具类
 
 
 
